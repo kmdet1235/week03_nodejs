@@ -7,7 +7,7 @@ const { Post } = require("../schemas/post");
 
 commentRouter.post("/:postId", async (req, res) => {
   try {
-    const postId = req.params._postId;
+    const { postId } = req.params;
     const { user, password, content } = req.body;
     if (!user) res.status(400).send({ err: "user name is required" });
     if (!password) res.status(400).send({ err: "password is required" });
@@ -28,9 +28,9 @@ commentRouter.get("/:postId", async (req, res) => {
     const comments = await Comment.find(
       { postId: postId },
       {
+        _id: false,
         postId: false,
         password: false,
-        content: false,
         __v: false,
       }
     ).sort({ createdAt: -1 });
